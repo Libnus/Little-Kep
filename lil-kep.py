@@ -93,13 +93,12 @@ def calculate_kepler_equation(e, M_epoch, ot):
 # 	return r0/v
 
 def convert_2d(a, e, E):
-	global coordinates
 	P = a * (cos(E) - e)
 	Q = a * sin(E) * sqrt(1 - e**2)
 
 	distance = sqrt(P**2 + Q**2)
 
-	print("\n2D Coordinates: ({}, {})\nDistance: {}".format(P, Q, distance))
+	print("\n2D Coordinates: ({}, {})\nDistance: {}".format(P, Q, round(distance, 2) if distance >= 1 else distance))
 	return P, Q
 	# coordinates.append([P, Q])
 
@@ -122,6 +121,8 @@ def convert_3d(P, Q, w, i, W):
 # print("Eccentric Anomaly:", calculate_kepler_equation(e, Mean_epoch))
 
 def main():
+	coordinates = np.array[[]]
+
 	for body in body_attributes:
 		body_name = body[0]
 		e = float(body[2])
@@ -135,6 +136,7 @@ def main():
 		print(body_name + ": ")
 		E = calculate_kepler_equation(e, mean_anomaly_at_epoch, orbital_period)
 		P, Q = convert_2d(a, e, E) # Eccentric anomaly in radians
+
 		x, y, z = convert_3d(P, Q, w, i, W)
 
 	for sattelite in satellite_attributes:
